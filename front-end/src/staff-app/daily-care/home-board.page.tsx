@@ -9,6 +9,7 @@ import { Person } from "shared/models/person"
 import { useApi } from "shared/hooks/use-api"
 import { StudentListTile } from "staff-app/components/student-list-tile/student-list-tile.component"
 import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
+import { sortByFirstName, sortByLastName } from "shared/helpers/sort-by-name"
 
 export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false)
@@ -39,25 +40,13 @@ export const HomeBoardPage: React.FC = () => {
     if (action === "ascending") {
       setStudentData(data?.students)
     } else if (action === "descending") {
-      const sortedStudents = [...studentData!].reverse()
+      const sortedStudents = [...data?.students!].reverse()
       setStudentData(sortedStudents)
     } else if (action === "First Name") {
-      const sortedStudents = [...studentData!].sort(function (a, b) {
-        const nameA = a.first_name
-        const nameB = b.first_name
-        if (nameA > nameB) return 1
-        if (nameA < nameB) return -1
-        return 0
-      })
+      const sortedStudents = sortByFirstName(studentData!)
       setStudentData(sortedStudents)
     } else if (action === "Last Name") {
-      const sortedStudents = [...studentData!].sort(function (a, b) {
-        const nameA = a.last_name
-        const nameB = b.last_name
-        if (nameA > nameB) return 1
-        if (nameA < nameB) return -1
-        return 0
-      })
+      const sortedStudents = sortByLastName(studentData!)
       setStudentData(sortedStudents)
     }
   }
