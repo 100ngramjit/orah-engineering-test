@@ -9,7 +9,7 @@ import { Person } from "shared/models/person"
 import { useApi } from "shared/hooks/use-api"
 import { StudentListTile } from "staff-app/components/student-list-tile/student-list-tile.component"
 import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
-import { sortByFirstName, sortByLastName } from "shared/helpers/sort-by-name"
+import { searchByName, sortByFirstName, sortByLastName } from "shared/helpers/sort-by-name"
 
 export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false)
@@ -22,6 +22,7 @@ export const HomeBoardPage: React.FC = () => {
 
   useEffect(() => {
     setStudentData(data?.students)
+    console.log(searchByName(data?.students!, "Lee"))
   }, [data])
 
   const onToolbarAction = (action: ToolbarAction) => {
@@ -51,10 +52,19 @@ export const HomeBoardPage: React.FC = () => {
     }
   }
 
+  const searchButtonHandler = (query: string) => {
+    if (query === "") {
+      setStudentData(data?.students)
+    } else {
+      const res = searchByName(data?.students!, query)
+      setStudentData(res)
+    }
+  }
+
   return (
     <>
       <S.PageContainer>
-        <Toolbar onItemClick={onToolbarAction} onSortButtonClick={sortButtonHandler} />
+        <Toolbar onItemClick={onToolbarAction} onSortButtonClick={sortButtonHandler} onSearchButtonClick={searchButtonHandler} />
 
         {loadState === "loading" && (
           <CenteredContainer>
@@ -85,12 +95,17 @@ type ToolbarAction = "roll" | "ascending" | "descending" | "First Name" | "Last 
 interface ToolbarProps {
   onItemClick: (action: ToolbarAction, value?: string) => void
   onSortButtonClick: (action: ToolbarAction, value?: string) => void
+  onSearchButtonClick: (query: string) => void
 }
 const Toolbar: React.FC<ToolbarProps> = (props) => {
-  const { onItemClick, onSortButtonClick } = props
+  const { onItemClick, onSortButtonClick, onSearchButtonClick } = props
 
-  function handleSelectChange(event: any) {
+  const handleSelectChange = (event: any) => {
     onSortButtonClick(event.target.value)
+  }
+
+  const handleInputChange = (event: { target: { value: string } }) => {
+    onSearchButtonClick(event.target.value)
   }
 
   return (
@@ -104,7 +119,9 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
           <option value="Last Name">Last Name</option>
         </select>
       </div>
-      <div>Search</div>
+      <div>
+        <input placeholder="Search by name" type="text" onChange={handleInputChange} />
+      </div>
       <S.Button onClick={() => onItemClick("roll")}>Start Roll</S.Button>
     </S.ToolbarContainer>
   )
