@@ -13,10 +13,15 @@ import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active
 export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false)
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
+  const [studentData, setStudentData] = useState(data?.students)
 
   useEffect(() => {
     void getStudents()
   }, [getStudents])
+
+  useEffect(() => {
+    setStudentData(data?.students)
+  }, [data])
 
   const onToolbarAction = (action: ToolbarAction) => {
     if (action === "roll") {
@@ -30,10 +35,37 @@ export const HomeBoardPage: React.FC = () => {
     }
   }
 
+  const sortButtonHandler = (action: ToolbarAction) => {
+    if (action === "ascending") {
+      setStudentData(data?.students)
+    } else if (action === "descending") {
+      const sortedStudents = [...studentData!].reverse()
+      setStudentData(sortedStudents)
+    } else if (action === "First Name") {
+      const sortedStudents = [...studentData!].sort(function (a, b) {
+        const nameA = a.first_name
+        const nameB = b.first_name
+        if (nameA > nameB) return 1
+        if (nameA < nameB) return -1
+        return 0
+      })
+      setStudentData(sortedStudents)
+    } else if (action === "Last Name") {
+      const sortedStudents = [...studentData!].sort(function (a, b) {
+        const nameA = a.last_name
+        const nameB = b.last_name
+        if (nameA > nameB) return 1
+        if (nameA < nameB) return -1
+        return 0
+      })
+      setStudentData(sortedStudents)
+    }
+  }
+
   return (
     <>
       <S.PageContainer>
-        <Toolbar onItemClick={onToolbarAction} />
+        <Toolbar onItemClick={onToolbarAction} onSortButtonClick={sortButtonHandler} />
 
         {loadState === "loading" && (
           <CenteredContainer>
@@ -41,9 +73,9 @@ export const HomeBoardPage: React.FC = () => {
           </CenteredContainer>
         )}
 
-        {loadState === "loaded" && data?.students && (
+        {loadState === "loaded" && studentData && (
           <>
-            {data.students.map((s) => (
+            {studentData.map((s) => (
               <StudentListTile key={s.id} isRollMode={isRollMode} student={s} />
             ))}
           </>
@@ -60,15 +92,29 @@ export const HomeBoardPage: React.FC = () => {
   )
 }
 
-type ToolbarAction = "roll" | "sort"
+type ToolbarAction = "roll" | "ascending" | "descending" | "First Name" | "Last Name"
 interface ToolbarProps {
   onItemClick: (action: ToolbarAction, value?: string) => void
+  onSortButtonClick: (action: ToolbarAction, value?: string) => void
 }
 const Toolbar: React.FC<ToolbarProps> = (props) => {
-  const { onItemClick } = props
+  const { onItemClick, onSortButtonClick } = props
+
+  function handleSelectChange(event: any) {
+    onSortButtonClick(event.target.value)
+  }
+
   return (
     <S.ToolbarContainer>
-      <div onClick={() => onItemClick("sort")}>First Name</div>
+      <div>
+        <label>Sort by</label>
+        <select onChange={handleSelectChange}>
+          <option value="ascending">ascending</option>
+          <option value="descending">descending</option>
+          <option value="First Name">First Name</option>
+          <option value="Last Name">Last Name</option>
+        </select>
+      </div>
       <div>Search</div>
       <S.Button onClick={() => onItemClick("roll")}>Start Roll</S.Button>
     </S.ToolbarContainer>
