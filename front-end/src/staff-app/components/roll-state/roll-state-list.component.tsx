@@ -7,13 +7,12 @@ import { RolllStateType } from "shared/models/roll"
 import { RollContext } from "shared/context/RollContext"
 
 interface Props {
-  stateList: StateList[]
   onItemClick?: (type: ItemType) => void
   size?: number
 }
-export const RollStateList: React.FC<Props> = ({ stateList, size = 14, onItemClick }) => {
+export const RollStateList: React.FC<Props> = ({ size = 14, onItemClick }) => {
   const rollContext = useContext(RollContext)
-  const { rollState, setRollState } = rollContext
+  const { rollCountStateList, setRollCountStateList } = rollContext
 
   const onClick = (type: ItemType) => {
     if (onItemClick) {
@@ -23,7 +22,7 @@ export const RollStateList: React.FC<Props> = ({ stateList, size = 14, onItemCli
 
   return (
     <S.ListContainer>
-      {rollState.map((s, i) => {
+      {rollCountStateList.map((s, i) => {
         if (s.type === "all") {
           return (
             <S.ListItem key={i}>

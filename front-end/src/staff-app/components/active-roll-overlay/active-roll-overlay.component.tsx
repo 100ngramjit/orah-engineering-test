@@ -18,14 +18,7 @@ export const ActiveRollOverlay: React.FC<Props> = (props) => {
       <S.Content>
         <div>Class Attendance</div>
         <div>
-          <RollStateList
-            stateList={[
-              { type: "all", count: 0 },
-              { type: "present", count: 0 },
-              { type: "late", count: 0 },
-              { type: "absent", count: 0 },
-            ]}
-          />
+          <RollStateList />
           <div style={{ marginTop: Spacing.u6 }}>
             <Button color="inherit" onClick={() => onItemClick("exit")}>
               Exit

@@ -9,12 +9,12 @@ interface StateList {
 }
 
 interface RollContextType {
-  rollState: StateList[]
-  setRollState?: Dispatch<SetStateAction<StateList[]>>
+  rollCountStateList: StateList[]
+  setRollCountStateList?: Dispatch<SetStateAction<StateList[]>>
 }
 
 const defaultState = {
-  rollState: [
+  rollCountStateList: [
     { type: "all", count: 14 },
     { type: "present", count: 0 },
     { type: "late", count: 0 },
@@ -24,13 +24,13 @@ const defaultState = {
 
 const RollContext = createContext<RollContextType>(defaultState)
 const RollProvider = ({ children }: any) => {
-  const [rollState, setRollState] = useState(defaultState.rollState)
+  const [rollCountStateList, setRollCountStateList] = useState(defaultState.rollCountStateList)
 
   return (
     <RollContext.Provider
       value={{
-        rollState,
-        setRollState,
+        rollCountStateList,
+        setRollCountStateList,
       }}
     >
       {children}
