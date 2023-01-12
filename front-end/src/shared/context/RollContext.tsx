@@ -1,4 +1,4 @@
-import { useState, createContext, Dispatch, SetStateAction } from "react"
+import { useState, createContext, Dispatch, SetStateAction, useEffect } from "react"
 import * as React from "react"
 import { RolllStateType } from "shared/models/roll"
 import { useApi } from "shared/hooks/use-api"
@@ -29,11 +29,11 @@ const RollProvider = ({ children }: any) => {
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
   const [rollCountStateList, setRollCountStateList] = useState(defaultState.rollCountStateList)
 
-  React.useEffect(() => {
+  useEffect(() => {
     void getStudents()
   }, [getStudents])
 
-  React.useEffect(() => {
+  useEffect(() => {
     loadState === "loaded" &&
       setRollCountStateList(
         [...rollCountStateList].map((ele) => {
@@ -43,7 +43,6 @@ const RollProvider = ({ children }: any) => {
           return ele
         })
       )
-    console.log(rollCountStateList)
   }, [loadState])
 
   return (
