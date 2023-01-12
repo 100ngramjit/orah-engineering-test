@@ -15,10 +15,22 @@ export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", si
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const nextState = () => {
-    const states: RolllStateType[] = ["present", "late", "absent"]
-    if (rollState === "unmark" || rollState === "absent") return states[0]
+    const states: RolllStateType[] = ["unmark", "present", "late", "absent"]
+    if (rollState === "absent") return states[0]
     const matchingIndex = states.findIndex((s) => s === rollState)
     return matchingIndex > -1 ? states[matchingIndex + 1] : states[0]
+  }
+
+  const rollStateCountUpdater = () => {
+    const updatedRollCountList = [...rollCountStateList]
+    if (currentIndex !== 0) {
+      updatedRollCountList[currentIndex].count = updatedRollCountList[currentIndex].count - 1
+    }
+    if (currentIndex !== updatedRollCountList.length - 1) {
+      updatedRollCountList[(currentIndex + 1) % updatedRollCountList.length].count++
+    }
+    setCurrentIndex((currentIndex + 1) % updatedRollCountList.length)
+    setRollCountStateList?.(updatedRollCountList)
   }
 
   const onClick = () => {
@@ -27,13 +39,7 @@ export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", si
     if (onStateChange) {
       onStateChange(next)
     }
-    const updatedRollCountList = [...rollCountStateList]
-    if (currentIndex !== 0) {
-      updatedRollCountList[currentIndex].count = updatedRollCountList[currentIndex].count - 1
-    }
-    updatedRollCountList[(currentIndex + 1) % updatedRollCountList.length].count++
-    setCurrentIndex((currentIndex + 1) % updatedRollCountList.length)
-    setRollCountStateList?.(updatedRollCountList)
+    rollStateCountUpdater()
   }
 
   return <RollStateIcon type={rollState} size={size} onClick={onClick} />
