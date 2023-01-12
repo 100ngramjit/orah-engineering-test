@@ -12,6 +12,7 @@ export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", si
   const [rollState, setRollState] = useState(initialState)
   const rollContext = useContext(RollContext)
   const { rollCountStateList, setRollCountStateList } = rollContext
+  const [currentIndex, setCurrentIndex] = useState(0)
 
   const nextState = () => {
     const states: RolllStateType[] = ["present", "late", "absent"]
@@ -26,13 +27,13 @@ export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", si
     if (onStateChange) {
       onStateChange(next)
     }
-    const updatedList = [...rollCountStateList].map((ele) => {
-      if (ele.type === next) {
-        ele.count = ele.count + 1
-      }
-      return ele
-    })
-    setRollCountStateList?.(updatedList)
+    const updatedRollCountList = [...rollCountStateList]
+    if (currentIndex !== 0) {
+      updatedRollCountList[currentIndex].count = updatedRollCountList[currentIndex].count - 1
+    }
+    updatedRollCountList[(currentIndex + 1) % updatedRollCountList.length].count++
+    setCurrentIndex((currentIndex + 1) % updatedRollCountList.length)
+    setRollCountStateList?.(updatedRollCountList)
   }
 
   return <RollStateIcon type={rollState} size={size} onClick={onClick} />
