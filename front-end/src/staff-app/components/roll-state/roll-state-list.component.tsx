@@ -14,7 +14,7 @@ interface Props {
 }
 export const RollStateList: React.FC<Props> = ({ size = 14, onItemClick = true }) => {
   const rollContext = useContext(RollContext)
-  const { rollCountStateList, setRollCountStateList, studentData, setStudentData, data, loadState, iconColor, setIconColor } = rollContext
+  const { rollCountStateList, setStudentData, data, iconColor } = rollContext
 
   const onClick = (type: ItemType) => {
     console.log("IIIII", type)

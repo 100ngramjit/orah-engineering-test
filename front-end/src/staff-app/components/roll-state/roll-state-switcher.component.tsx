@@ -14,7 +14,7 @@ interface Props {
 export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", size = 40, onStateChange, id }) => {
   const [rollState, setRollState] = useState(initialState)
   const rollContext = useContext(RollContext)
-  const { rollCountStateList, setRollCountStateList, studentData, setStudentData, data, loadState, iconColor, setIconColor } = rollContext
+  const { rollCountStateList, setRollCountStateList, iconColor, setIconColor } = rollContext
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const nextState = () => {
@@ -56,8 +56,6 @@ export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", si
     }
     rollStateCountUpdater()
     rollIconUpdater(id)
-    // setIconColor([...iconColor, { id: id, rollState: rollState }])
-    // localStorage.setItem("iconColor", JSON.stringify(iconColor))
   }
 
   return <RollStateIcon type={iconColor[id] ? iconColor[id] : "unmark"} size={size} onClick={onClick} />

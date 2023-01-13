@@ -44,7 +44,6 @@ const defaultState = {
 const RollContext = createContext<RollContextType>(defaultState)
 const RollProvider = ({ children }: any) => {
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
-  const [saveRoll, saveRollData, rollLoadState] = useApi<{ students: Person[] }>({ url: "save-roll" })
   const [rollCountStateList, setRollCountStateList] = useState(defaultState.rollCountStateList)
   const [studentData, setStudentData] = useState(defaultState.studentData)
   const [filteredData, setFilteredData] = useState(defaultState.filteredData)
@@ -64,11 +63,6 @@ const RollProvider = ({ children }: any) => {
           return ele
         })
       )
-    console.log(data)
-
-    // obj={}
-    // obj[3]="j"
-    // obj={3: "j"}
     setStudentData(data?.students!)
     let colorState = {} as { [key: number]: RolllStateType }
     data?.students.forEach(({ id }) => {

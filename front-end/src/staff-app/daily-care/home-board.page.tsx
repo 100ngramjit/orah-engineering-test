@@ -5,30 +5,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { Spacing, BorderRadius, FontWeight } from "shared/styles/styles"
 import { Colors } from "shared/styles/colors"
 import { CenteredContainer } from "shared/components/centered-container/centered-container.component"
-import { Person } from "shared/models/person"
-import { useApi } from "shared/hooks/use-api"
 import { StudentListTile } from "staff-app/components/student-list-tile/student-list-tile.component"
 import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
 import { searchByName, sortByFirstName, sortByLastName } from "shared/helpers/toolbar-utils"
 import { RollContext } from "shared/context/RollContext"
-import { RolllStateType } from "shared/models/roll"
 import { Box } from "@material-ui/core"
 
 export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false)
   const rollContext = useContext(RollContext)
-  const { rollCountStateList, setRollCountStateList, studentData, setStudentData, data, loadState, iconColor, setIconColor } = rollContext
-  // const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
-  // const [studentData, setStudentData] = useState(data?.students)
-
-  // useEffect(() => {
-  //   void getStudents()
-  // }, [getStudents])
-
-  // useEffect(() => {
-  //   setStudentData(data?.students)
-  // }, [data])
-  // const [iconColor, setIconColor] = useState({} as { id: RolllStateType })
+  const { studentData, setStudentData, data, loadState } = rollContext
 
   const onToolbarAction = (action: ToolbarAction) => {
     if (action === "roll") {

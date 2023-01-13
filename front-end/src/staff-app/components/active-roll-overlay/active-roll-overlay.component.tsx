@@ -31,28 +31,28 @@ export const ActiveRollOverlay: React.FC<Props> = (props) => {
 
   const { isActive, onItemClick } = props
   const rollContext = useContext(RollContext)
-  const { rollCountStateList, setRollCountStateList, studentData, setStudentData, data, loadState, iconColor, setIconColor } = rollContext
+  const { iconColor } = rollContext
 
-  const [studentRollStates, setStudentRollStates] = useState([] as { student_id: string; roll_state: string }[])
+  const [studentRollStates, setStudentRollStates] = useState([] as { student_id: number; roll_state: string }[])
   useEffect(() => {
     console.log("saveRollData", saveRollData)
     console.log("getRollData", getRollData)
   }, [saveRollData, getRollData])
 
-  // {1:"j", 2: "j"}
   useEffect(() => {
-    let colorState = [] as { student_id: string; roll_state: string }[]
-    Object.keys(iconColor).forEach((id) => {
+    let colorState = [] as { student_id: number; roll_state: string }[]
+    const iconColorKeys = Object.keys(iconColor)
+    console.log("iconColor", iconColor)
+    const nums = iconColorKeys.map(function (str) {
+      return parseInt(str)
+    })
+    console.log("nums", nums)
+    nums.forEach((id) => {
+      let rollState = iconColor[id] as RolllStateType
       colorState.push({ student_id: id, roll_state: iconColor[id] })
       setStudentRollStates?.(colorState)
     })
-
-    // console.log("ICONNNN", iconColor)
   }, [iconColor])
-
-  // useEffect(() => {
-  //   console.log("studentRollStates", studentRollStates)
-  // }, [studentRollStates])
 
   return (
     <S.Overlay isActive={isActive}>
