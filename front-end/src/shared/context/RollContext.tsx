@@ -14,7 +14,9 @@ interface RollContextType {
   rollCountStateList: StateList[]
   setRollCountStateList?: Dispatch<SetStateAction<StateList[]>>
   studentData: Person[] | undefined
+  filteredData: Person[] | undefined
   setStudentData?: Dispatch<SetStateAction<Person[]>>
+  setFilteredData?: Dispatch<SetStateAction<Person[]>>
   data: { students: Person[] } | undefined
   loadState: string
   setIconColor?: React.Dispatch<
@@ -42,7 +44,7 @@ const defaultState = {
 const RollContext = createContext<RollContextType>(defaultState)
 const RollProvider = ({ children }: any) => {
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
-  const [saveRoll, saveRollData, rollLoadState] = useApi<{}>({ url: "save-roll" })
+  const [saveRoll, saveRollData, rollLoadState] = useApi<{ students: Person[] }>({ url: "save-roll" })
   const [rollCountStateList, setRollCountStateList] = useState(defaultState.rollCountStateList)
   const [studentData, setStudentData] = useState(defaultState.studentData)
   const [filteredData, setFilteredData] = useState(defaultState.filteredData)
@@ -63,13 +65,22 @@ const RollProvider = ({ children }: any) => {
         })
       )
     console.log(data)
+
+    // obj={}
+    // obj[3]="j"
+    // obj={3: "j"}
     setStudentData(data?.students!)
-    setFilteredData(data?.students!)
+    let colorState = {} as { [key: number]: RolllStateType }
+    data?.students.forEach(({ id }) => {
+      colorState[id] = "unmark"
+    })
+    setIconColor(colorState as { id: RolllStateType })
   }, [loadState])
 
   return (
     <RollContext.Provider
       value={{
+        filteredData,
         rollCountStateList,
         setRollCountStateList,
         studentData,
