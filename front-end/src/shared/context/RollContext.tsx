@@ -33,6 +33,7 @@ const defaultState = {
     { type: "absent", count: 0 },
   ] as StateList[],
   studentData: [] as Person[],
+  filteredData: [] as Person[],
   data: {} as { students: Person[] },
   loadState: "loading",
   iconColor: {} as { id: RolllStateType },
@@ -41,8 +42,10 @@ const defaultState = {
 const RollContext = createContext<RollContextType>(defaultState)
 const RollProvider = ({ children }: any) => {
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
+  const [saveRoll, saveRollData, rollLoadState] = useApi<{}>({ url: "save-roll" })
   const [rollCountStateList, setRollCountStateList] = useState(defaultState.rollCountStateList)
   const [studentData, setStudentData] = useState(defaultState.studentData)
+  const [filteredData, setFilteredData] = useState(defaultState.filteredData)
   const [iconColor, setIconColor] = useState({} as { id: RolllStateType })
 
   useEffect(() => {
@@ -61,6 +64,7 @@ const RollProvider = ({ children }: any) => {
       )
     console.log(data)
     setStudentData(data?.students!)
+    setFilteredData(data?.students!)
   }, [loadState])
 
   return (
