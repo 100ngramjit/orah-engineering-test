@@ -17,6 +17,12 @@ interface RollContextType {
   setStudentData?: Dispatch<SetStateAction<Person[]>>
   data: { students: Person[] } | undefined
   loadState: string
+  setIconColor?: React.Dispatch<
+    React.SetStateAction<{
+      id: RolllStateType
+    }>
+  >
+  iconColor: { id: RolllStateType }
 }
 
 const defaultState = {
@@ -29,6 +35,7 @@ const defaultState = {
   studentData: [] as Person[],
   data: {} as { students: Person[] },
   loadState: "loading",
+  iconColor: {} as { id: RolllStateType },
 }
 
 const RollContext = createContext<RollContextType>(defaultState)
@@ -36,6 +43,7 @@ const RollProvider = ({ children }: any) => {
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
   const [rollCountStateList, setRollCountStateList] = useState(defaultState.rollCountStateList)
   const [studentData, setStudentData] = useState(defaultState.studentData)
+  const [iconColor, setIconColor] = useState({} as { id: RolllStateType })
 
   useEffect(() => {
     void getStudents()
@@ -64,6 +72,8 @@ const RollProvider = ({ children }: any) => {
         setStudentData,
         data,
         loadState,
+        iconColor,
+        setIconColor,
       }}
     >
       {children}

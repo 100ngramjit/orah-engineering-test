@@ -27,7 +27,7 @@ export const StudentListTile: React.FC<Props> = ({ isRollMode, student, id, setI
       </S.Content>
       {isRollMode && (
         <S.Roll>
-          <RollStateSwitcher id={id} iconColor={iconColor} setIconColor={setIconColor} />
+          <RollStateSwitcher id={id} iconColor={iconColor} setIconColor={setIconColor} initialState={iconColor.id} />
         </S.Roll>
       )}
     </S.Container>
