@@ -25,7 +25,7 @@ export const sortByLastName=(arr:Person[])=>{
 
 export const searchByName=(arr:Person[],query:string)=>{
     const res=[...arr].filter((ele)=>{
-        if(ele.first_name.includes(query)||ele.first_name.includes(query)||(ele.first_name+" "+ele.last_name).includes(query)){
+        if(ele.first_name.toLowerCase().includes(query.toLowerCase())||ele.first_name.toLowerCase().includes(query.toLowerCase())||(ele.first_name.toLowerCase()+" "+ele.last_name.toLowerCase()).includes(query.toLowerCase())){
             return ele
         }
     })

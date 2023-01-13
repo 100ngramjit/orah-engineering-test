@@ -11,14 +11,8 @@ interface Props {
   isRollMode?: boolean
   student: Person
   id: number
-  setIconColor: React.Dispatch<
-    React.SetStateAction<{
-      id: RolllStateType
-    }>
-  >
-  iconColor: { id: RolllStateType }
 }
-export const StudentListTile: React.FC<Props> = ({ isRollMode, student, id, setIconColor, iconColor }) => {
+export const StudentListTile: React.FC<Props> = ({ isRollMode, student, id }) => {
   return (
     <S.Container>
       <S.Avatar url={Images.avatar}></S.Avatar>
@@ -27,7 +21,7 @@ export const StudentListTile: React.FC<Props> = ({ isRollMode, student, id, setI
       </S.Content>
       {isRollMode && (
         <S.Roll>
-          <RollStateSwitcher id={id} iconColor={iconColor} setIconColor={setIconColor} initialState={iconColor.id} />
+          <RollStateSwitcher id={id} />
         </S.Roll>
       )}
     </S.Container>

@@ -12,11 +12,12 @@ import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active
 import { searchByName, sortByFirstName, sortByLastName } from "shared/helpers/toolbar-utils"
 import { RollContext } from "shared/context/RollContext"
 import { RolllStateType } from "shared/models/roll"
+import { Box } from "@material-ui/core"
 
 export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false)
   const rollContext = useContext(RollContext)
-  const { rollCountStateList, setRollCountStateList, studentData, setStudentData, data, loadState } = rollContext
+  const { rollCountStateList, setRollCountStateList, studentData, setStudentData, data, loadState, iconColor, setIconColor } = rollContext
   // const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
   // const [studentData, setStudentData] = useState(data?.students)
 
@@ -27,7 +28,7 @@ export const HomeBoardPage: React.FC = () => {
   // useEffect(() => {
   //   setStudentData(data?.students)
   // }, [data])
-  const [iconColor, setIconColor] = useState({} as { id: RolllStateType })
+  // const [iconColor, setIconColor] = useState({} as { id: RolllStateType })
 
   const onToolbarAction = (action: ToolbarAction) => {
     if (action === "roll") {
@@ -77,11 +78,7 @@ export const HomeBoardPage: React.FC = () => {
         )}
 
         {loadState === "loaded" && studentData && (
-          <>
-            {studentData.map((s) => (
-              <StudentListTile key={s.id} isRollMode={isRollMode} student={s} id={s.id} iconColor={iconColor} setIconColor={setIconColor} />
-            ))}
-          </>
+          <>{studentData.length > 0 ? studentData.map((s) => <StudentListTile key={s.id} isRollMode={isRollMode} student={s} id={s.id} />) : <Box>No Students Available</Box>}</>
         )}
 
         {loadState === "error" && (

@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import React, { useContext } from "react"
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -10,12 +12,25 @@ interface Props {
   onItemClick?: (type: ItemType) => void
   size?: number
 }
-export const RollStateList: React.FC<Props> = ({ size = 14, onItemClick }) => {
+export const RollStateList: React.FC<Props> = ({ size = 14, onItemClick = true }) => {
   const rollContext = useContext(RollContext)
-  const { rollCountStateList, setRollCountStateList, studentData, setStudentData, data, loadState } = rollContext
+  const { rollCountStateList, setRollCountStateList, studentData, setStudentData, data, loadState, iconColor, setIconColor } = rollContext
 
   const onClick = (type: ItemType) => {
+    console.log("IIIII", type)
     if (onItemClick) {
+      const filteredData = data?.students?.filter((item) => {
+        if (type !== "all") {
+          if (item.id in iconColor) {
+            if (iconColor[item.id] === type) {
+              return item
+            }
+          }
+        } else {
+          return data?.students
+        }
+      })
+      setStudentData(filteredData)
       onItemClick(type)
     }
   }

@@ -10,17 +10,11 @@ interface Props {
   size?: number
   onStateChange?: (newState: RolllStateType) => void
   id: number
-  setIconColor: React.Dispatch<
-    React.SetStateAction<{
-      id: RolllStateType
-    }>
-  >
-  iconColor: { id: RolllStateType }
 }
-export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", size = 40, onStateChange, id, setIconColor, iconColor }) => {
+export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", size = 40, onStateChange, id }) => {
   const [rollState, setRollState] = useState(initialState)
   const rollContext = useContext(RollContext)
-  const { rollCountStateList, setRollCountStateList } = rollContext
+  const { rollCountStateList, setRollCountStateList, studentData, setStudentData, data, loadState, iconColor, setIconColor } = rollContext
   const [currentIndex, setCurrentIndex] = useState(0)
 
   const nextState = () => {
