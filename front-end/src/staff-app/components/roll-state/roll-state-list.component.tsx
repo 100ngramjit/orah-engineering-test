@@ -17,7 +17,6 @@ export const RollStateList: React.FC<Props> = ({ size = 14, onItemClick = true }
   const { rollCountStateList, setStudentData, data, iconColor } = rollContext
 
   const onClick = (type: ItemType) => {
-    console.log("IIIII", type)
     if (onItemClick) {
       const filteredData = data?.students?.filter((item) => {
         if (type !== "all") {

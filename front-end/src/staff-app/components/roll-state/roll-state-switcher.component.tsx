@@ -44,10 +44,6 @@ export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", si
     }
   }
 
-  useEffect(() => {
-    console.log("first", iconColor)
-  }, [iconColor])
-
   const onClick = () => {
     const next = nextState()
     setRollState(next)

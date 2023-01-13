@@ -6,10 +6,12 @@ import { Activity } from "shared/models/activity"
 
 export const ActivityPage: React.FC = () => {
   const [getRoll, RollData, RollLoadState] = useApi<{ activity: Activity[] }>({ url: "get-activities" })
+
   useEffect(() => {
     getRoll()
     console.log("getRollData", RollData)
   }, [getRoll])
+
   useEffect(() => {
     console.log("getRollData", RollData)
   }, [RollLoadState])

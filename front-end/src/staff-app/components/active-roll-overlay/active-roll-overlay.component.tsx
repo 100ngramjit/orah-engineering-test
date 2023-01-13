@@ -6,7 +6,6 @@ import Button from "@material-ui/core/Button"
 import { BorderRadius, Spacing } from "shared/styles/styles"
 import { RollStateList } from "staff-app/components/roll-state/roll-state-list.component"
 import { useApi } from "shared/hooks/use-api"
-import { Person } from "shared/models/person"
 import { RolllStateType } from "shared/models/roll"
 import { RollContext } from "shared/context/RollContext"
 
@@ -27,28 +26,19 @@ export const ActiveRollOverlay: React.FC<Props> = (props) => {
     completed_at: Date
   }>({ url: "save-roll" })
 
-  const [getRoll, getRollData, getRollLoadState] = useApi<{}>({ url: "get-activities" })
-
   const { isActive, onItemClick } = props
   const rollContext = useContext(RollContext)
   const { iconColor } = rollContext
 
   const [studentRollStates, setStudentRollStates] = useState([] as { student_id: number; roll_state: string }[])
-  useEffect(() => {
-    console.log("saveRollData", saveRollData)
-    console.log("getRollData", getRollData)
-  }, [saveRollData, getRollData])
 
   useEffect(() => {
     let colorState = [] as { student_id: number; roll_state: string }[]
     const iconColorKeys = Object.keys(iconColor)
-    console.log("iconColor", iconColor)
     const nums = iconColorKeys.map(function (str) {
       return parseInt(str)
     })
-    console.log("nums", nums)
     nums.forEach((id) => {
-      let rollState = iconColor[id] as RolllStateType
       colorState.push({ student_id: id, roll_state: iconColor[id] })
       setStudentRollStates?.(colorState)
     })
@@ -69,7 +59,6 @@ export const ActiveRollOverlay: React.FC<Props> = (props) => {
               style={{ marginLeft: Spacing.u2 }}
               onClick={() => {
                 saveRoll({ student_roll_states: studentRollStates })
-                getRoll()
                 onItemClick("exit")
               }}
             >
