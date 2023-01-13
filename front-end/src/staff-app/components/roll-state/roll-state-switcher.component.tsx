@@ -1,4 +1,6 @@
-import React, { useContext, useState } from "react"
+// @ts-nocheck
+
+import React, { useContext, useEffect, useState } from "react"
 import { RollContext } from "shared/context/RollContext"
 import { RolllStateType } from "shared/models/roll"
 import { RollStateIcon } from "staff-app/components/roll-state/roll-state-icon.component"
@@ -7,8 +9,15 @@ interface Props {
   initialState?: RolllStateType
   size?: number
   onStateChange?: (newState: RolllStateType) => void
+  id: number
+  setIconColor: React.Dispatch<
+    React.SetStateAction<{
+      id: RolllStateType
+    }>
+  >
+  iconColor: { id: RolllStateType }
 }
-export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", size = 40, onStateChange }) => {
+export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", size = 40, onStateChange, id, setIconColor, iconColor }) => {
   const [rollState, setRollState] = useState(initialState)
   const rollContext = useContext(RollContext)
   const { rollCountStateList, setRollCountStateList } = rollContext
@@ -33,6 +42,18 @@ export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", si
     setRollCountStateList?.(updatedRollCountList)
   }
 
+  const rollIconUpdater = (id) => {
+    if (!(id in iconColor)) {
+      setIconColor({ ...iconColor, [id]: "present" })
+    } else {
+      setIconColor({ ...iconColor, [id]: nextState() })
+    }
+  }
+
+  useEffect(() => {
+    console.log("first", iconColor)
+  }, [iconColor])
+
   const onClick = () => {
     const next = nextState()
     setRollState(next)
@@ -40,6 +61,9 @@ export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", si
       onStateChange(next)
     }
     rollStateCountUpdater()
+    rollIconUpdater(id)
+    // setIconColor([...iconColor, { id: id, rollState: rollState }])
+    // localStorage.setItem("iconColor", JSON.stringify(iconColor))
   }
 
   return <RollStateIcon type={rollState} size={size} onClick={onClick} />

@@ -11,6 +11,7 @@ import { StudentListTile } from "staff-app/components/student-list-tile/student-
 import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
 import { searchByName, sortByFirstName, sortByLastName } from "shared/helpers/toolbar-utils"
 import { RollContext } from "shared/context/RollContext"
+import { RolllStateType } from "shared/models/roll"
 
 export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false)
@@ -26,6 +27,7 @@ export const HomeBoardPage: React.FC = () => {
   // useEffect(() => {
   //   setStudentData(data?.students)
   // }, [data])
+  const [iconColor, setIconColor] = useState({} as { id: RolllStateType })
 
   const onToolbarAction = (action: ToolbarAction) => {
     if (action === "roll") {
@@ -77,7 +79,7 @@ export const HomeBoardPage: React.FC = () => {
         {loadState === "loaded" && studentData && (
           <>
             {studentData.map((s) => (
-              <StudentListTile key={s.id} isRollMode={isRollMode} student={s} id={s.id} />
+              <StudentListTile key={s.id} isRollMode={isRollMode} student={s} id={s.id} iconColor={iconColor} setIconColor={setIconColor} />
             ))}
           </>
         )}
