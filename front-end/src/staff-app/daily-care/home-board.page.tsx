@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, useContext } from "react"
 import styled from "styled-components"
 import Button from "@material-ui/core/ButtonBase"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -10,19 +10,22 @@ import { useApi } from "shared/hooks/use-api"
 import { StudentListTile } from "staff-app/components/student-list-tile/student-list-tile.component"
 import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
 import { searchByName, sortByFirstName, sortByLastName } from "shared/helpers/toolbar-utils"
+import { RollContext } from "shared/context/RollContext"
 
 export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false)
-  const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
-  const [studentData, setStudentData] = useState(data?.students)
+  const rollContext = useContext(RollContext)
+  const { rollCountStateList, setRollCountStateList, studentData, setStudentData, data, loadState } = rollContext
+  // const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
+  // const [studentData, setStudentData] = useState(data?.students)
 
-  useEffect(() => {
-    void getStudents()
-  }, [getStudents])
+  // useEffect(() => {
+  //   void getStudents()
+  // }, [getStudents])
 
-  useEffect(() => {
-    setStudentData(data?.students)
-  }, [data])
+  // useEffect(() => {
+  //   setStudentData(data?.students)
+  // }, [data])
 
   const onToolbarAction = (action: ToolbarAction) => {
     if (action === "roll") {
@@ -38,25 +41,25 @@ export const HomeBoardPage: React.FC = () => {
 
   const sortButtonHandler = (action: ToolbarAction) => {
     if (action === "ascending") {
-      setStudentData(data?.students)
+      setStudentData?.(data?.students!)
     } else if (action === "descending") {
       const sortedStudents = [...data?.students!].reverse()
-      setStudentData(sortedStudents)
+      setStudentData?.(sortedStudents)
     } else if (action === "First Name") {
       const sortedStudents = sortByFirstName(studentData!)
-      setStudentData(sortedStudents)
+      setStudentData?.(sortedStudents)
     } else if (action === "Last Name") {
       const sortedStudents = sortByLastName(studentData!)
-      setStudentData(sortedStudents)
+      setStudentData?.(sortedStudents)
     }
   }
 
   const searchButtonHandler = (query: string) => {
     if (query === "") {
-      setStudentData(data?.students)
+      setStudentData?.(data?.students!)
     } else {
       const res = searchByName(data?.students!, query)
-      setStudentData(res)
+      setStudentData?.(res)
     }
   }
 
@@ -74,7 +77,7 @@ export const HomeBoardPage: React.FC = () => {
         {loadState === "loaded" && studentData && (
           <>
             {studentData.map((s) => (
-              <StudentListTile key={s.id} isRollMode={isRollMode} student={s} />
+              <StudentListTile key={s.id} isRollMode={isRollMode} student={s} id={s.id} />
             ))}
           </>
         )}

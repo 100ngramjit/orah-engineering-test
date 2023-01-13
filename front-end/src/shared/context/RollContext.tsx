@@ -13,6 +13,10 @@ interface StateList {
 interface RollContextType {
   rollCountStateList: StateList[]
   setRollCountStateList?: Dispatch<SetStateAction<StateList[]>>
+  studentData: Person[] | undefined
+  setStudentData?: Dispatch<SetStateAction<Person[]>>
+  data: { students: Person[] } | undefined
+  loadState: string
 }
 
 const defaultState = {
@@ -22,12 +26,16 @@ const defaultState = {
     { type: "late", count: 0 },
     { type: "absent", count: 0 },
   ] as StateList[],
+  studentData: [] as Person[],
+  data: {} as { students: Person[] },
+  loadState: "loading",
 }
 
 const RollContext = createContext<RollContextType>(defaultState)
 const RollProvider = ({ children }: any) => {
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
   const [rollCountStateList, setRollCountStateList] = useState(defaultState.rollCountStateList)
+  const [studentData, setStudentData] = useState(defaultState.studentData)
 
   useEffect(() => {
     void getStudents()
@@ -43,6 +51,8 @@ const RollProvider = ({ children }: any) => {
           return ele
         })
       )
+    console.log(data)
+    setStudentData(data?.students!)
   }, [loadState])
 
   return (
@@ -50,6 +60,10 @@ const RollProvider = ({ children }: any) => {
       value={{
         rollCountStateList,
         setRollCountStateList,
+        studentData,
+        setStudentData,
+        data,
+        loadState,
       }}
     >
       {children}
