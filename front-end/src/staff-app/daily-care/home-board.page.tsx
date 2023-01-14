@@ -9,7 +9,7 @@ import { StudentListTile } from "staff-app/components/student-list-tile/student-
 import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
 import { searchByName, sortByFirstName, sortByLastName } from "shared/helpers/toolbar-utils"
 import { RollContext } from "shared/context/RollContext"
-import { Box } from "@material-ui/core"
+import { Box, TextField } from "@material-ui/core"
 
 export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false)
@@ -107,7 +107,15 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
         </select>
       </div>
       <div>
-        <input placeholder="Search by name" type="text" onChange={handleInputChange} />
+        <TextField
+          style={{ border: "2px solid white", borderRadius: "5px" }}
+          inputProps={{ style: { color: "white", fontWeight: `${FontWeight.strong}` } }}
+          variant="outlined"
+          size="small"
+          placeholder="Search by name"
+          type="text"
+          onChange={handleInputChange}
+        />
       </div>
       <S.Button onClick={() => onItemClick("roll")}>Start Roll</S.Button>
     </S.ToolbarContainer>

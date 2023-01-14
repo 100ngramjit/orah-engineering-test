@@ -37,7 +37,7 @@ export const ActivityPage: React.FC = () => {
   }, [RollLoadState])
   return (
     <S.Container>
-      <Typography>List of rolls</Typography>
+      <Typography>List of completed rolls</Typography>
       {RollLoadState === "loading" && (
         <CenteredContainer>
           <FontAwesomeIcon icon="spinner" size="2x" spin />
