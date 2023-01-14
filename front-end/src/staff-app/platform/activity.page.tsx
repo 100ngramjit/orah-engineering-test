@@ -7,6 +7,7 @@ import { makeStyles } from "@material-ui/styles"
 import { Accordion, AccordionSummary, Typography, AccordionDetails, Divider, Chip } from "@material-ui/core"
 import { RolllStateType } from "shared/models/roll"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons"
 import { CenteredContainer } from "shared/components/centered-container/centered-container.component"
 
 export const ActivityPage: React.FC = () => {
@@ -47,7 +48,7 @@ export const ActivityPage: React.FC = () => {
         RollData?.activity?.map((ele) => (
           <div className={classes.root} key={ele.date.toString()}>
             <Accordion>
-              <AccordionSummary aria-controls="panel1a-content" id="panel1a-header">
+              <AccordionSummary aria-controls="panel1a-content" id="panel1a-header" expandIcon={<FontAwesomeIcon icon={faChevronDown} />}>
                 <Typography>{ele.entity.name}</Typography>
               </AccordionSummary>
               <Divider />
