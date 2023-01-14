@@ -1,6 +1,6 @@
 import React, { useEffect } from "react"
 import styled from "styled-components"
-import { FontSize, FontWeight, Spacing } from "shared/styles/styles"
+import { FontSize, Spacing } from "shared/styles/styles"
 import { useApi } from "shared/hooks/use-api"
 import { Activity } from "shared/models/activity"
 import { makeStyles } from "@material-ui/styles"
@@ -25,6 +25,13 @@ export const ActivityPage: React.FC = () => {
     column: {
       flexBasis: "50%",
     },
+    heading: {
+      flexBasis: "50%",
+      flexShrink: 0,
+    },
+    secondaryHeading: {
+      color: "#787777",
+    },
   }))
   const classes = useStyles()
 
@@ -32,12 +39,13 @@ export const ActivityPage: React.FC = () => {
     getRoll()
   }, [getRoll])
 
-  useEffect(() => {
-    console.log("getRollData", RollData)
-  }, [RollLoadState])
+  const getDate = (date: any) => {
+    const updatedDate = new Date(date)
+    return updatedDate.toLocaleString()
+  }
   return (
     <S.Container>
-      <Typography>List of completed rolls</Typography>
+      <Typography style={{ padding: 2, margin: 2 }}>List of completed rolls</Typography>
       {RollLoadState === "loading" && (
         <CenteredContainer>
           <FontAwesomeIcon icon="spinner" size="2x" spin />
@@ -49,7 +57,8 @@ export const ActivityPage: React.FC = () => {
           <div className={classes.root} key={ele.date.toString()}>
             <Accordion>
               <AccordionSummary aria-controls="panel1a-content" id="panel1a-header" expandIcon={<FontAwesomeIcon icon={faChevronDown} />}>
-                <Typography>{ele.entity.name}</Typography>
+                <Typography className={classes.heading}>{ele.entity.name}</Typography>
+                <Typography className={classes.secondaryHeading}>{getDate(ele.date)}</Typography>
               </AccordionSummary>
               <Divider />
               <AccordionDetails className={classes.details}>

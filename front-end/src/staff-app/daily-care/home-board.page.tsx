@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react"
+import React, { useState, useContext } from "react"
 import styled from "styled-components"
 import Button from "@material-ui/core/ButtonBase"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
@@ -9,7 +9,7 @@ import { StudentListTile } from "staff-app/components/student-list-tile/student-
 import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
 import { searchByName, sortByFirstName, sortByLastName } from "shared/helpers/toolbar-utils"
 import { RollContext } from "shared/context/RollContext"
-import { Box, TextField } from "@material-ui/core"
+import { Box, FormControl, InputLabel, makeStyles, MenuItem, Select, TextField } from "@material-ui/core"
 
 export const HomeBoardPage: React.FC = () => {
   const [isRollMode, setIsRollMode] = useState(false)
@@ -87,6 +87,36 @@ interface ToolbarProps {
 const Toolbar: React.FC<ToolbarProps> = (props) => {
   const { onItemClick, onSortButtonClick, onSearchButtonClick } = props
 
+  const useStyles = makeStyles((theme) => ({
+    formControl: {
+      minWidth: 120,
+    },
+    selectEmpty: {
+      marginTop: theme.spacing(2),
+    },
+
+    select: {
+      "&:before": {
+        borderColor: "white",
+      },
+      "&:after": {
+        borderColor: "white",
+      },
+      "&:not(.Mui-disabled):hover::before": {
+        borderColor: "white",
+      },
+    },
+    icon: {
+      fill: "white",
+    },
+    root: {
+      color: "white",
+    },
+    label: { color: "white", fontWeight: FontWeight.strong },
+  }))
+
+  const classes = useStyles()
+
   const handleSelectChange = (event: any) => {
     onSortButtonClick(event.target.value)
   }
@@ -97,26 +127,36 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
 
   return (
     <S.ToolbarContainer>
-      <div>
-        <label>Sort by</label>
-        <select onChange={handleSelectChange}>
-          <option value="ascending">ascending</option>
-          <option value="descending">descending</option>
-          <option value="First Name">First Name</option>
-          <option value="Last Name">Last Name</option>
-        </select>
-      </div>
-      <div>
-        <TextField
-          style={{ border: "2px solid white", borderRadius: "5px" }}
-          inputProps={{ style: { color: "white", fontWeight: `${FontWeight.strong}` } }}
-          variant="outlined"
-          size="small"
-          placeholder="Search by name"
-          type="text"
-          onChange={handleInputChange}
-        />
-      </div>
+      <FormControl className={classes.formControl} size="small">
+        <InputLabel id="demo-simple-select-label" className={classes.label}>
+          Sort by
+        </InputLabel>
+        <Select
+          className={classes.select}
+          defaultValue="ascending"
+          inputProps={{
+            classes: {
+              icon: classes.icon,
+              root: classes.root,
+            },
+          }}
+          onChange={handleSelectChange}
+        >
+          <MenuItem value="ascending">ascending</MenuItem>
+          <MenuItem value="descending">descending</MenuItem>
+          <MenuItem value="First Name">First Name</MenuItem>
+          <MenuItem value="Last Name">Last Name</MenuItem>
+        </Select>
+      </FormControl>
+      <TextField
+        className={classes.select}
+        style={{ border: "1.5px solid white", borderRadius: "5px" }}
+        inputProps={{ style: { color: "white", fontWeight: `${FontWeight.strong}` } }}
+        variant="outlined"
+        size="small"
+        placeholder="Search by name"
+        onChange={handleInputChange}
+      />
       <S.Button onClick={() => onItemClick("roll")}>Start Roll</S.Button>
     </S.ToolbarContainer>
   )
