@@ -1,8 +1,11 @@
 // @ts-nocheck
 
+//external imports
 import React, { useContext } from "react"
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
+//internal imports
 import { RollStateIcon } from "staff-app/components/roll-state/roll-state-icon.component"
 import { Spacing, FontWeight } from "shared/styles/styles"
 import { RolllStateType } from "shared/models/roll"
@@ -13,9 +16,10 @@ interface Props {
   size?: number
 }
 export const RollStateList: React.FC<Props> = ({ size = 14, onItemClick = true }) => {
-  const rollContext = useContext(RollContext)
-  const { rollCountStateList, setStudentData, data, iconColor } = rollContext
+  //misc
+  const { rollCountStateList, setStudentData, data, iconColor } = useContext(RollContext)
 
+  //func
   const onClick = (type: ItemType) => {
     if (onItemClick) {
       const filteredData = data?.students?.filter((item) => {
@@ -36,20 +40,20 @@ export const RollStateList: React.FC<Props> = ({ size = 14, onItemClick = true }
 
   return (
     <S.ListContainer>
-      {rollCountStateList.map((s, i) => {
-        if (s.type === "all") {
+      {rollCountStateList.map(({ type, count }, i) => {
+        if (type === "all") {
           return (
             <S.ListItem key={i}>
-              <FontAwesomeIcon icon="users" size="sm" style={{ cursor: "pointer" }} onClick={() => onClick(s.type)} />
-              <span>{s.count}</span>
+              <FontAwesomeIcon icon="users" size="sm" style={{ cursor: "pointer" }} onClick={() => onClick(type)} />
+              <span>{count}</span>
             </S.ListItem>
           )
         }
 
         return (
           <S.ListItem key={i}>
-            <RollStateIcon type={s.type} size={size} onClick={() => onClick(s.type)} />
-            <span>{s.count}</span>
+            <RollStateIcon type={type} size={size} onClick={() => onClick(type)} />
+            <span>{count}</span>
           </S.ListItem>
         )
       })}

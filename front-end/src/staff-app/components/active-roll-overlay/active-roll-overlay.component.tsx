@@ -1,8 +1,11 @@
 // @ts-nocheck
 
+//external imports
 import React, { useContext, useEffect, useState } from "react"
 import styled from "styled-components"
 import Button from "@material-ui/core/Button"
+
+//internal imports
 import { BorderRadius, Spacing } from "shared/styles/styles"
 import { RollStateList } from "staff-app/components/roll-state/roll-state-list.component"
 import { useApi } from "shared/hooks/use-api"
@@ -15,7 +18,8 @@ interface Props {
   onItemClick: (action: ActiveRollAction, value?: string) => void
 }
 
-export const ActiveRollOverlay: React.FC<Props> = (props) => {
+export const ActiveRollOverlay: React.FC<Props> = ({ isActive, onItemClick }) => {
+  //misc
   const [saveRoll, saveRollData, rollLoadState] = useApi<{
     id: number
     name: string
@@ -25,13 +29,12 @@ export const ActiveRollOverlay: React.FC<Props> = (props) => {
     }[]
     completed_at: Date
   }>({ url: "save-roll" })
+  const { setRollCountStateList, data, iconColor, setIconColor, setStudentData } = useContext(RollContext)
 
-  const { isActive, onItemClick } = props
-  const rollContext = useContext(RollContext)
-  const { setRollCountStateList, data, iconColor, setIconColor } = rollContext
-
+  //state
   const [studentRollStates, setStudentRollStates] = useState([] as { student_id: number; roll_state: string }[])
 
+  //func
   const handleComplete = () => {
     saveRoll({ student_roll_states: studentRollStates })
     onItemClick("exit")
@@ -46,8 +49,10 @@ export const ActiveRollOverlay: React.FC<Props> = (props) => {
       colorState[id] = "unmark"
     })
     setIconColor(colorState as { id: RolllStateType })
+    setStudentData(data?.students)
   }
 
+  //async
   useEffect(() => {
     let colorState = [] as { student_id: number; roll_state: string }[]
     const iconColorKeys = Object.keys(iconColor)
@@ -66,14 +71,14 @@ export const ActiveRollOverlay: React.FC<Props> = (props) => {
         <div>Class Attendance</div>
         <div>
           <RollStateList />
-          <div style={{ marginTop: Spacing.u6 }}>
+          <S.MarginTopDiv>
             <Button color="inherit" onClick={() => onItemClick("exit")}>
               Exit
             </Button>
-            <Button color="inherit" style={{ marginLeft: Spacing.u2 }} onClick={handleComplete}>
+            <Button color="inherit" onClick={handleComplete}>
               Complete
             </Button>
-          </div>
+          </S.MarginTopDiv>
         </div>
       </S.Content>
     </S.Overlay>
@@ -100,5 +105,8 @@ const S = {
     border: 1px solid #f5f5f536;
     border-radius: ${BorderRadius.default};
     padding: ${Spacing.u4};
+  `,
+  MarginTopDiv: styled.div`
+    margin-top: ${Spacing.u6};
   `,
 }

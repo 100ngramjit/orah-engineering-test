@@ -1,7 +1,11 @@
+//external imports
 import React, { useState, useContext } from "react"
 import styled from "styled-components"
 import Button from "@material-ui/core/ButtonBase"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { Box, FormControl, InputLabel, makeStyles, MenuItem, Select, TextField } from "@material-ui/core"
+
+//internal imports
 import { Spacing, BorderRadius, FontWeight } from "shared/styles/styles"
 import { Colors } from "shared/styles/colors"
 import { CenteredContainer } from "shared/components/centered-container/centered-container.component"
@@ -9,13 +13,15 @@ import { StudentListTile } from "staff-app/components/student-list-tile/student-
 import { ActiveRollOverlay, ActiveRollAction } from "staff-app/components/active-roll-overlay/active-roll-overlay.component"
 import { searchByName, sortByFirstName, sortByLastName } from "shared/helpers/toolbar-utils"
 import { RollContext } from "shared/context/RollContext"
-import { Box, FormControl, InputLabel, makeStyles, MenuItem, Select, TextField } from "@material-ui/core"
 
 export const HomeBoardPage: React.FC = () => {
-  const [isRollMode, setIsRollMode] = useState(false)
-  const rollContext = useContext(RollContext)
-  const { studentData, setStudentData, data, loadState } = rollContext
+  //misc
+  const { studentData, setStudentData, data, loadState } = useContext(RollContext)
 
+  //state
+  const [isRollMode, setIsRollMode] = useState(false)
+
+  //func
   const onToolbarAction = (action: ToolbarAction) => {
     if (action === "roll") {
       setIsRollMode(true)
@@ -64,7 +70,15 @@ export const HomeBoardPage: React.FC = () => {
         )}
 
         {loadState === "loaded" && studentData && (
-          <>{studentData.length > 0 ? studentData.map((s) => <StudentListTile key={s.id} isRollMode={isRollMode} student={s} id={s.id} />) : <Box>No Students Available</Box>}</>
+          <>
+            {studentData.length > 0 ? (
+              studentData.map((s) => <StudentListTile key={s.id} isRollMode={isRollMode} student={s} id={s.id} />)
+            ) : (
+              <CenteredContainer>
+                <div>No students available</div>
+              </CenteredContainer>
+            )}
+          </>
         )}
 
         {loadState === "error" && (
@@ -105,6 +119,8 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
       "&:not(.Mui-disabled):hover::before": {
         borderColor: "white",
       },
+      border: "1.5px solid white",
+      borderRadius: "5px",
     },
     icon: {
       fill: "white",
@@ -117,13 +133,9 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
 
   const classes = useStyles()
 
-  const handleSelectChange = (event: any) => {
-    onSortButtonClick(event.target.value)
-  }
+  const handleSelectChange = (event: any) => onSortButtonClick(event.target.value)
 
-  const handleInputChange = (event: { target: { value: string } }) => {
-    onSearchButtonClick(event.target.value)
-  }
+  const handleInputChange = (event: { target: { value: string } }) => onSearchButtonClick(event.target.value)
 
   return (
     <S.ToolbarContainer>
@@ -150,7 +162,6 @@ const Toolbar: React.FC<ToolbarProps> = (props) => {
       </FormControl>
       <TextField
         className={classes.select}
-        style={{ border: "1.5px solid white", borderRadius: "5px" }}
         inputProps={{ style: { color: "white", fontWeight: `${FontWeight.strong}` } }}
         variant="outlined"
         size="small"

@@ -1,5 +1,8 @@
+//external imports
 import { useState, createContext, Dispatch, SetStateAction, useEffect } from "react"
 import * as React from "react"
+
+//internal imports
 import { RolllStateType } from "shared/models/roll"
 import { useApi } from "shared/hooks/use-api"
 import { Person } from "shared/models/person"
@@ -43,12 +46,16 @@ const defaultState = {
 
 const RollContext = createContext<RollContextType>(defaultState)
 const RollProvider = ({ children }: any) => {
+  //misc
   const [getStudents, data, loadState] = useApi<{ students: Person[] }>({ url: "get-homeboard-students" })
+
+  //state
   const [rollCountStateList, setRollCountStateList] = useState(defaultState.rollCountStateList)
   const [studentData, setStudentData] = useState(defaultState.studentData)
   const [filteredData, setFilteredData] = useState(defaultState.filteredData)
   const [iconColor, setIconColor] = useState({} as { id: RolllStateType })
 
+  //async
   useEffect(() => {
     void getStudents()
   }, [getStudents])

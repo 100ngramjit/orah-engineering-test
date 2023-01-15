@@ -12,11 +12,14 @@ interface Props {
   id: number
 }
 export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", size = 40, onStateChange, id }) => {
+  //misc
+  const { rollCountStateList, setRollCountStateList, iconColor, setIconColor } = useContext(RollContext)
+
+  //state
   const [rollState, setRollState] = useState(initialState)
-  const rollContext = useContext(RollContext)
-  const { rollCountStateList, setRollCountStateList, iconColor, setIconColor } = rollContext
   const [currentIndex, setCurrentIndex] = useState(0)
 
+  //func
   const nextState = () => {
     const states: RolllStateType[] = ["unmark", "present", "late", "absent"]
     if (rollState === "absent") return states[0]

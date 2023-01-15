@@ -1,5 +1,8 @@
+//external imports
 import React from "react"
 import styled from "styled-components"
+
+//internal imports
 import { Spacing, BorderRadius, FontWeight } from "shared/styles/styles"
 import { Images } from "assets/images"
 import { Colors } from "shared/styles/colors"

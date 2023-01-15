@@ -1,6 +1,10 @@
+//external imports
+
 import React from "react"
 import styled from "styled-components"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+
+//internal imports
 import { BorderRadius } from "shared/styles/styles"
 import { Colors } from "shared/styles/colors"
 import { RolllStateType } from "shared/models/roll"
@@ -10,8 +14,7 @@ interface Props {
   size?: number
   onClick?: () => void
 }
-export const RollStateIcon: React.FC<Props> = (props) => {
-  const { type, size = 20, onClick } = props
+export const RollStateIcon: React.FC<Props> = ({ type, size = 20, onClick }) => {
   return (
     <S.Icon size={size} border={type === "unmark"} bgColor={getBgColor(type)} clickable={Boolean(onClick)} onClick={onClick}>
       <FontAwesomeIcon icon="check" size={size > 14 ? "lg" : "sm"} />

@@ -1,6 +1,9 @@
+//external imports
 import React from "react"
 import styled from "styled-components"
 import { NavLink } from "react-router-dom"
+
+//internal imports
 import { Colors } from "shared/styles/colors"
 import { FontWeight } from "shared/styles/styles"
 
@@ -17,6 +20,7 @@ export const Header: React.FC = () => {
 }
 
 const NavItem: React.FC<{ to: string }> = (props) => {
+  //misc
   const activeStyle = ({ isActive }: { isActive: boolean }) => ({
     textDecoration: "none",
     fontWeight: FontWeight.strong,
@@ -24,6 +28,7 @@ const NavItem: React.FC<{ to: string }> = (props) => {
     padding: "18px 20px 17px",
     backgroundColor: isActive ? "#1b4f90" : Colors.blue.base,
   })
+
   return (
     <NavLink to={props.to} style={activeStyle}>
       {props.children}
