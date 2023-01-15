@@ -28,9 +28,25 @@ export const ActiveRollOverlay: React.FC<Props> = (props) => {
 
   const { isActive, onItemClick } = props
   const rollContext = useContext(RollContext)
-  const { iconColor } = rollContext
+  const { setRollCountStateList, data, iconColor, setIconColor } = rollContext
 
   const [studentRollStates, setStudentRollStates] = useState([] as { student_id: number; roll_state: string }[])
+
+  const handleComplete = () => {
+    saveRoll({ student_roll_states: studentRollStates })
+    onItemClick("exit")
+    setRollCountStateList([
+      { type: "all", count: data?.students.length },
+      { type: "present", count: 0 },
+      { type: "late", count: 0 },
+      { type: "absent", count: 0 },
+    ])
+    let colorState = {} as { [key: number]: RolllStateType }
+    data?.students.forEach(({ id }) => {
+      colorState[id] = "unmark"
+    })
+    setIconColor(colorState as { id: RolllStateType })
+  }
 
   useEffect(() => {
     let colorState = [] as { student_id: number; roll_state: string }[]
@@ -54,14 +70,7 @@ export const ActiveRollOverlay: React.FC<Props> = (props) => {
             <Button color="inherit" onClick={() => onItemClick("exit")}>
               Exit
             </Button>
-            <Button
-              color="inherit"
-              style={{ marginLeft: Spacing.u2 }}
-              onClick={() => {
-                saveRoll({ student_roll_states: studentRollStates })
-                onItemClick("exit")
-              }}
-            >
+            <Button color="inherit" style={{ marginLeft: Spacing.u2 }} onClick={handleComplete}>
               Complete
             </Button>
           </div>
