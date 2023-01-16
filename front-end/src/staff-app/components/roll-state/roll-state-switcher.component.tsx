@@ -40,11 +40,7 @@ export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", si
   }
 
   const rollIconUpdater = (id: number) => {
-    if (!(id in iconColor)) {
-      setIconColor?.({ ...iconColor, [id]: "present" })
-    } else {
-      setIconColor?.({ ...iconColor, [id]: nextState() })
-    }
+    setIconColor?.({ ...iconColor, [id]: nextState() })
   }
 
   const onClick = () => {
