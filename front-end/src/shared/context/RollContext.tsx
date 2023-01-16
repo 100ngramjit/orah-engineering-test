@@ -17,9 +17,7 @@ interface RollContextType {
   rollCountStateList: StateList[]
   setRollCountStateList?: Dispatch<SetStateAction<StateList[]>>
   studentData: Person[] | undefined
-  filteredData: Person[] | undefined
   setStudentData?: Dispatch<SetStateAction<Person[]>>
-  setFilteredData?: Dispatch<SetStateAction<Person[]>>
   data: { students: Person[] } | undefined
   loadState: string
   setIconColor?: React.Dispatch<
@@ -38,7 +36,6 @@ const defaultState = {
     { type: "absent", count: 0 },
   ] as StateList[],
   studentData: [] as Person[],
-  filteredData: [] as Person[],
   data: {} as { students: Person[] },
   loadState: "loading",
   iconColor: {} as { id: RolllStateType },
@@ -52,7 +49,6 @@ const RollProvider = ({ children }: any) => {
   //state
   const [rollCountStateList, setRollCountStateList] = useState(defaultState.rollCountStateList)
   const [studentData, setStudentData] = useState(defaultState.studentData)
-  const [filteredData, setFilteredData] = useState(defaultState.filteredData)
   const [iconColor, setIconColor] = useState({} as { id: RolllStateType })
 
   //async
@@ -81,7 +77,6 @@ const RollProvider = ({ children }: any) => {
   return (
     <RollContext.Provider
       value={{
-        filteredData,
         rollCountStateList,
         setRollCountStateList,
         studentData,

@@ -20,7 +20,7 @@ interface Props {
 
 export const ActiveRollOverlay: React.FC<Props> = ({ isActive, onItemClick }) => {
   //misc
-  const [saveRoll, saveRollData, rollLoadState] = useApi<{
+  const [saveRoll] = useApi<{
     id: number
     name: string
     student_roll_states: {

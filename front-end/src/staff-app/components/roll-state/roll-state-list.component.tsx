@@ -78,9 +78,4 @@ const S = {
   `,
 }
 
-interface StateList {
-  type: ItemType
-  count: number
-}
-
 type ItemType = RolllStateType | "all"

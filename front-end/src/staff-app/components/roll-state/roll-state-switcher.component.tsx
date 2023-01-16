@@ -1,6 +1,6 @@
 // @ts-nocheck
 
-import React, { useContext, useEffect, useState } from "react"
+import React, { useContext, useState } from "react"
 import { RollContext } from "shared/context/RollContext"
 import { RolllStateType } from "shared/models/roll"
 import { RollStateIcon } from "staff-app/components/roll-state/roll-state-icon.component"

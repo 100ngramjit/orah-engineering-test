@@ -3,7 +3,7 @@ import React, { useState, useContext } from "react"
 import styled from "styled-components"
 import Button from "@material-ui/core/ButtonBase"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { Box, FormControl, InputLabel, makeStyles, MenuItem, Select, TextField } from "@material-ui/core"
+import { FormControl, InputLabel, makeStyles, MenuItem, Select, TextField } from "@material-ui/core"
 
 //internal imports
 import { Spacing, BorderRadius, FontWeight } from "shared/styles/styles"
