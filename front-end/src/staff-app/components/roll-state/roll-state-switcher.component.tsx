@@ -53,5 +53,5 @@ export const RollStateSwitcher: React.FC<Props> = ({ initialState = "unmark", si
     rollIconUpdater(id)
   }
 
-  return <RollStateIcon type={iconColor[id] ? iconColor[id] : "unmark"} size={size} onClick={onClick} />
+  return <RollStateIcon type={iconColor[id]} size={size} onClick={onClick} />
 }
