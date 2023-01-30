@@ -130,7 +130,7 @@ export const ActivityPage: React.FC = () => {
                   <TableBody>
                     {entity.student_roll_states.map(({ student_id, roll_state }, index) => {
                       return (
-                        <TableRow key={student_id.toString()} className={classes.details}>
+                        <TableRow hover key={student_id.toString()} className={classes.details}>
                           <TableCell align="left">{student_id}</TableCell>
                           <TableCell align="left">{PersonHelper.getFullName(data?.students[index]!)}</TableCell>
                           <TableCell align="left">

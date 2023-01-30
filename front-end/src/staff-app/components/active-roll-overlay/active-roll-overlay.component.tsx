@@ -35,8 +35,10 @@ export const ActiveRollOverlay: React.FC<Props> = ({ isActive, onItemClick }) =>
   const [studentRollStates, setStudentRollStates] = useState([] as { student_id: number; roll_state: string }[])
 
   //func
-  const handleComplete = () => {
-    saveRoll({ student_roll_states: studentRollStates })
+  const handleComplete = (action: string) => {
+    if (action === "complete") {
+      saveRoll({ student_roll_states: studentRollStates })
+    }
     onItemClick("exit")
     setRollCountStateList([
       { type: "all", count: data?.students.length },
@@ -72,10 +74,10 @@ export const ActiveRollOverlay: React.FC<Props> = ({ isActive, onItemClick }) =>
         <div>
           <RollStateList />
           <S.MarginTopDiv>
-            <Button color="inherit" onClick={() => onItemClick("exit")}>
+            <Button color="inherit" onClick={() => handleComplete("exit")}>
               Exit
             </Button>
-            <Button color="inherit" onClick={handleComplete}>
+            <Button color="inherit" onClick={() => handleComplete("complete")}>
               Complete
             </Button>
           </S.MarginTopDiv>
